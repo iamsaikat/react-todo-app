@@ -2,6 +2,21 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Build with
+
+- React Js, Css, Typescript
+- React Hooks: useState, useNavigate
+- react-icons, Material UI
+
+## Features
+
+- Add todo
+- Clear all completed todos
+- Toggle todo
+- Remove todo ( coming soon )
+- Update todo ( coming soon )
+- Redux ( coming soon )
+
 ## Available Scripts
 
 In the project directory, you can run:
