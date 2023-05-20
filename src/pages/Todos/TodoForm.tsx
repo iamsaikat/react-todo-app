@@ -1,32 +1,49 @@
 import { useFormik } from "formik";
 import { MdAddCircle, MdClearAll } from "react-icons/md";
-import { AddTodoItem, ClearCompletedTodos } from "./Todo.type";
+import { RiEditCircleLine } from "react-icons/ri";
+import { AddTodoItem, Todo } from "./Todo.type";
 import { Box, Button, FormControl, TextField } from "@mui/material";
+import { useEffect, useState } from "react";
+import { AppDispatch } from "../../redux/store";
+import { useDispatch } from "react-redux";
+import { removeAllCompletedTodo, updateTodo } from "../../redux/todoSlice";
 
 interface IAddTodoProps {
+  formData: Todo;
   onAddTodo: AddTodoItem;
-  onClearCompleted: ClearCompletedTodos;
 }
 
 export default function TodoForm({
+  formData,
   onAddTodo,
-  onClearCompleted,
 }: IAddTodoProps) {
+
+  const [isEdit, setIsEdit] = useState<boolean>(false);
+  const dispatch = useDispatch<AppDispatch>();
   const formik = useFormik({
     initialValues: {
-      title: "",
+      title: formData.title,
     },
     onSubmit: (values) => {
       if (values.title.length > 0) {
-        onAddTodo({ id: Date.now(), title: values.title, completed: false });
+        if (isEdit) {
+          dispatch(updateTodo({...formData, title: values.title}));
+          setIsEdit(false);
+        } else {
+          onAddTodo(values.title);
+        }
         formik.resetForm();
       }
     },
   });
 
-  const handleClearCompleted = () => {
-    onClearCompleted();
-  };
+  useEffect(() => {
+    if (formData.title && formData.id) {
+      formik.setFieldValue("title", formData.title);
+      setIsEdit(true);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [formData]);
 
   return (
     <form onSubmit={formik.handleSubmit}>
@@ -43,7 +60,7 @@ export default function TodoForm({
             name="title"
             label="Do Homework"
             type="text"
-            size="small" 
+            size="small"
             variant="outlined"
             onChange={formik.handleChange}
             value={formik.values.title}
@@ -60,18 +77,18 @@ export default function TodoForm({
             type="submit"
             variant="outlined"
             disabled={formik.values.title.length === 0}
-            startIcon={<MdAddCircle />}
+            startIcon={isEdit ? <RiEditCircleLine /> : <MdAddCircle />}
             sx={{
               ml: 1,
             }}
           >
-            Add
+            {isEdit ? 'Update' : 'Add'}
           </Button>
           <Button
             type="button"
             variant="outlined"
-            color={'warning'}
-            onClick={() => handleClearCompleted()}
+            color={"warning"}
+            onClick={() => dispatch(removeAllCompletedTodo(true))}
             startIcon={<MdClearAll />}
             sx={{
               ml: 1,

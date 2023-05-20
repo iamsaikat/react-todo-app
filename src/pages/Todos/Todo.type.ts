@@ -1,10 +1,10 @@
 export interface Todo {
-  id: number;
+  id: string;
   title: string;
   completed: boolean; 
 }
 
 
-export type AddTodoItem = (item: Todo) => void;
-export type ClearCompletedTodos = () => void;
-export type ToggleTodo = (id: number) => void;
+export type AddTodoItem = (title: string) => void;
+export type ToggleTodo = (todo: Todo) => void;
+export type EditTodo = (todo: Todo) => void;

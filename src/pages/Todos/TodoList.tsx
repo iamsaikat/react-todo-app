@@ -1,6 +1,6 @@
 import { MdCheckCircle, MdTimer, MdCheckCircleOutline } from "react-icons/md";
 import { RiEditCircleLine } from "react-icons/ri";
-import { Todo, ToggleTodo } from "./Todo.type";
+import { EditTodo, Todo, ToggleTodo } from "./Todo.type";
 import {
   Box,
   IconButton,
@@ -14,12 +14,18 @@ import { green, grey } from "@mui/material/colors";
 interface ITodoListProps {
   todos: Todo[];
   onToggleTodo: ToggleTodo;
+  onEditTodo: EditTodo;
 }
 
-export default function TodoList({ todos, onToggleTodo }: ITodoListProps) {
-  const handleToggle = (id: number) => {
-    onToggleTodo(id);
+export default function TodoList({ todos, onToggleTodo, onEditTodo }: ITodoListProps) {
+  const handleToggle = (todo: Todo) => {
+    onToggleTodo(todo);
   };
+
+  const handleEditTodo = (todo: Todo) => {
+    onEditTodo(todo);
+  };
+
 
   return (
     <List sx={{ width: "100%", bgcolor: "background.paper" }}>
@@ -32,10 +38,10 @@ export default function TodoList({ todos, onToggleTodo }: ITodoListProps) {
               alignItems: 'center',
               gap: 2
             }}>
-              <IconButton edge="end" aria-label="edit" color="primary" onClick={() => {}}>
+              <IconButton edge="end" aria-label="edit" color="primary" onClick={() => handleEditTodo(todo)}>
                 <RiEditCircleLine />
               </IconButton>
-              <IconButton edge="end" aria-label="done" color="secondary" onClick={() => handleToggle(todo.id)}>
+              <IconButton edge="end" aria-label="done" color="secondary" onClick={() => handleToggle(todo)}>
                 <MdCheckCircleOutline />
               </IconButton>
             </Box>
