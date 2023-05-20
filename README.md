@@ -5,17 +5,17 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 ## Build with
 
 - React Js, Css, Typescript
-- React Hooks: useState, useNavigate
-- react-icons, Material UI
+- React Hooks: useState, useNavigate, useDispatch, useFormik, useEffect
+- react-icons, Material UI, react-redux
 
 ## Features
 
 - Add todo
-- Clear all completed todos
 - Toggle todo
-- Remove todo ( coming soon )
-- Update todo ( coming soon )
-- Redux ( coming soon )
+- Update todo
+- Remove todo
+- Clear all completed todos
+- Redux
 
 ## Available Scripts
 
