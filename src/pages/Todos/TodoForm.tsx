@@ -6,7 +6,7 @@ import { Box, Button, FormControl, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
 import { AppDispatch } from "../../redux/store";
 import { useDispatch } from "react-redux";
-import { removeAllCompletedTodo, updateTodo } from "../../redux/todoSlice";
+import { removeAllCompletedTodos, updateTodo } from "../../redux/todoThunk";
 
 interface IAddTodoProps {
   formData: Todo;
@@ -27,10 +27,10 @@ export default function TodoForm({
     onSubmit: (values) => {
       if (values.title.length > 0) {
         if (isEdit) {
-          dispatch(updateTodo({...formData, title: values.title}));
+          dispatch(updateTodo({...formData, ...values}));
           setIsEdit(false);
         } else {
-          onAddTodo(values.title);
+          onAddTodo(values);
         }
         formik.resetForm();
       }
@@ -38,7 +38,7 @@ export default function TodoForm({
   });
 
   useEffect(() => {
-    if (formData.title && formData.id) {
+    if (formData.title && formData._id) {
       formik.setFieldValue("title", formData.title);
       setIsEdit(true);
     }
@@ -88,7 +88,7 @@ export default function TodoForm({
             type="button"
             variant="outlined"
             color={"warning"}
-            onClick={() => dispatch(removeAllCompletedTodo(true))}
+            onClick={() => dispatch(removeAllCompletedTodos())}
             startIcon={<MdClearAll />}
             sx={{
               ml: 1,

@@ -6,7 +6,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 - React Js, Css, Typescript
 - React Hooks: useState, useNavigate, useDispatch, useFormik, useEffect
-- react-icons, Material UI, react-redux
+- react-icons, Material UI, react-redux, Axios
 
 ## Features
 
@@ -15,7 +15,20 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 - Update todo
 - Remove todo
 - Clear all completed todos
-- Redux
+- Redux, Thunk
+
+## Setup
+
+- Clone the repository
+
+`npm install` to install all the dependencies
+
+- Run with Node JS Api
+change the `todosReducer` import from `todoThunk` inside `redux/store.ts`
+Use this [NodeJS Todo App](https://github.com/iamsaikat/todos-nodejs-app) project for the web api
+
+- Run with local
+change the `todosReducer` import from `todoSlice` inside `redux/store.ts`
 
 ## Available Scripts
 

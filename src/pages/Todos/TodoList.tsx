@@ -31,7 +31,7 @@ export default function TodoList({ todos, onToggleTodo, onEditTodo }: ITodoListP
     <List sx={{ width: "100%", bgcolor: "background.paper" }}>
       {todos.map((todo) => (
         <ListItem
-          key={todo.id}
+          key={todo._id}
           secondaryAction={
             <Box sx={{
               display: 'flex',
@@ -57,7 +57,7 @@ export default function TodoList({ todos, onToggleTodo, onEditTodo }: ITodoListP
             sx={{
               textDecoration: todo.completed ? "line-through" : "none",
             }}
-            id={todo.id.toString()}
+            id={todo._id}
             primary={todo.title}
           />
         </ListItem>

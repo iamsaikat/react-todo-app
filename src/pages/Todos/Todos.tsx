@@ -4,23 +4,27 @@ import { Box, Container, Typography } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch, RootState } from "../../redux/store";
-import { addTodo, setTodoStatus } from "../../redux/todoSlice";
 import { Todo } from "./Todo.type";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { createTodo, getTodos, updateTodo } from "../../redux/todoThunk";
 
 export default function Todos() {
-  const [formData, setFormData] = useState<Todo>({id: '', title: '', completed: false});
+  const [formData, setFormData] = useState<Todo>({_id: '', title: '', completed: false});
   //React Redux Hooks
-  const todoList = useSelector((state: RootState) => state);
   const dispatch = useDispatch<AppDispatch>();
+  const { entities } = useSelector((state: RootState) => state.todos);
 
-  const addTodoItem = (title: string) => {
-    dispatch(addTodo(title));
+  useEffect(() => {
+    dispatch(getTodos())
+  }, [dispatch])
+
+  const addTodoItem = (value: any) => {
+    dispatch(createTodo(value));
   };
 
   const handleToggle = (todo: Todo) => {
     dispatch(
-      setTodoStatus({ completed: !todo.completed, id: todo.id })
+      updateTodo({ ...todo, completed: !todo.completed })
     );
   };
 
@@ -74,7 +78,7 @@ export default function Todos() {
             formData={formData}
             onAddTodo={addTodoItem}
           />
-          <TodoList todos={todoList} onToggleTodo={handleToggle} onEditTodo={handleEditTodo} />
+          <TodoList todos={entities} onToggleTodo={handleToggle} onEditTodo={handleEditTodo} />
         </Box>
       </Box>
     </Container>

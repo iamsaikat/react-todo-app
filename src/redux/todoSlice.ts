@@ -1,8 +1,13 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { v4 as uuidv4 } from "uuid";
 import { Todo } from "../pages/Todos/Todo.type";
+import { ITodoState } from "./types";
 
-const initialState = [] as Todo[];
+const initialState: ITodoState = {
+  entities: [],
+  loading: false,
+  error: null
+};
 
 const todoSlice = createSlice({
   name: "todos",
@@ -10,11 +15,11 @@ const todoSlice = createSlice({
   reducers: {
     addTodo: {
       reducer: (state, action: PayloadAction<Todo>) => {
-        state.push(action.payload);
+        state.entities.push(action.payload);
       },
       prepare: (title: string) => ({
         payload: {
-          id: uuidv4(),
+          _id: uuidv4(),
           title,
           completed: false,
         } as Todo,
@@ -22,32 +27,41 @@ const todoSlice = createSlice({
     },
 
     updateTodo(state, action: PayloadAction<Todo>) {
-      const index = state.findIndex((todo) => todo.id === action.payload.id);
-      state[index] = action.payload;
+      const index = state.entities.findIndex(
+        (todo) => todo._id === action.payload._id
+      );
+      state.entities[index] = action.payload;
     },
 
     removeTodo(state, action: PayloadAction<string>) {
-      const index = state.findIndex((todo) => todo.id === action.payload);
-      state.splice(index, 1);
+      const index = state.entities.findIndex(
+        (todo) => todo._id === action.payload
+      );
+      state.entities.splice(index, 1);
     },
 
-    removeAllCompletedTodo(state, action: PayloadAction<boolean>) {
-      if (action.payload) {
-        const newTodos = state.filter((todo) => !todo.completed);
-        return newTodos;
-      }
+    removeAllCompletedTodos(state) {
+      const newTodos = state.entities.filter((todo) => !todo.completed);
+      state.entities = newTodos;
     },
 
     setTodoStatus(
       state,
       action: PayloadAction<{ completed: boolean; id: string }>
     ) {
-      const index = state.findIndex((todo) => todo.id === action.payload.id);
-      state[index].completed = action.payload.completed;
+      const index = state.entities.findIndex(
+        (todo) => todo._id === action.payload.id
+      );
+      state.entities[index].completed = action.payload.completed;
     },
   },
 });
 
-export const { addTodo, updateTodo, removeTodo, removeAllCompletedTodo, setTodoStatus } =
-  todoSlice.actions;
+export const {
+  addTodo,
+  updateTodo,
+  removeTodo,
+  removeAllCompletedTodos,
+  setTodoStatus,
+} = todoSlice.actions;
 export default todoSlice.reducer;
